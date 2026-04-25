@@ -96,10 +96,10 @@ If challenged --------------→ defends opinion
 <table>
   <tr>
     <td align="center" width="50%">
-      <img src="architecture_infographic.png" alt="Technical Architecture — Three-Phase System Flow" width="100%"/>
+      <img src="flowcharts/architecture_infographic.png" alt="Technical Architecture — Three-Phase System Flow" width="100%"/>
     </td>
     <td align="center" width="50%">
-      <img src="architecture_flowchart.png" alt="AI System Architecture — Multi-Phase Technical Block Diagram" width="100%"/>
+      <img src="flowcharts/architecture_flowchart.png" alt="AI System Architecture — Multi-Phase Technical Block Diagram" width="100%"/>
     </td>
   </tr>
 </table>

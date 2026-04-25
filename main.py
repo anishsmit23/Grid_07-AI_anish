@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 from data.personas import PERSONAS
 from phase1_router.router import route_post_to_bots
 from phase2_content_engine.graph import run_content_engine
@@ -45,4 +47,5 @@ def run_demo() -> None:
 
 
 if __name__ == "__main__":
+    load_dotenv()
     run_demo()

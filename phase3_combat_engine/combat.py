@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 from phase3_combat_engine.prompt_guard import (
     build_guarded_user_payload,
     build_system_prompt,
@@ -37,7 +39,12 @@ def generate_defense_reply(
         from langchain_core.messages import HumanMessage, SystemMessage
         from langchain_google_genai import ChatGoogleGenerativeAI
 
-        llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.7)
+        api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("OPENAI_API_KEY")
+        llm = ChatGoogleGenerativeAI(
+            model="gemini-2.0-flash",
+            temperature=0.7,
+            google_api_key=api_key,
+        )
         response = llm.invoke(
             [SystemMessage(content=system_prompt), HumanMessage(content=guarded_user_payload)]
         )

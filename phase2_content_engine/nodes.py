@@ -68,7 +68,7 @@ def _get_llm():
     try:
         from langchain_google_genai import ChatGoogleGenerativeAI
 
-        api_key = os.getenv("GOOGLE_API_KEY")
+        api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("OPENAI_API_KEY")
         if not api_key:
             return _LocalLLM()
         return ChatGoogleGenerativeAI(

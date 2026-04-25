@@ -14,13 +14,13 @@
 <br/>
 
 > **Autonomous Persona-Driven AI Agent System** 
-My project simulates a team of AI personalities that can independently decide when to respond to a topic related to their own taste one of them is tech expert, second is a nature activist and last one is a finance guy and then generate informed content based on research, and defend their position using conversation memory.
+  My project simulates a team of AI personalities that can independently decide when to respond to a topic related to their own taste one of them is tech expert, second is a nature activist and last one is a finance guy and then generate informed content based on research, and defend their position using conversation memory.
 
-It also includes a safety mechanism that protects the AI from manipulation attempts, making it behave reliably even in adversarial scenarios. In simple words it a defencive agent which tells us if the human is trying to manipulate it or not. It is not a chatbot it is an agent which can take actions based on the inputs you cannot guide order it change it's personality or decision making process. It is a complete end to end agents system which can work independently.
+  It also includes a safety mechanism that protects the AI from manipulation attempts, making it behave reliably even in adversarial scenarios. In simple words it a defencive agent which tells us if the human is trying to manipulate it or not. It is not a chatbot it is an agent which can take actions based on the inputs you cannot guide order it change it's personality or decision making process. It is a complete end to end agents system which can work independently.
 
-This architecture mirrors real-world AI agent systems used in customer support, social media automation, and secure conversational platforms.
+  This architecture mirrors real-world AI agent systems used in customer support, social media automation, and secure conversational platforms.
 
-built with LangGraph, RAG-based combat memory, and a multi-layer prompt injection defence. Three coordinated phases simulate how an opinionated social agent discovers, publishes, and defends content — entirely end-to-end.
+  built with LangGraph, RAG-based combat memory, and a multi-layer prompt injection defence. Three coordinated phases simulate how an opinionated social agent discovers, publishes, and defends content — entirely end-to-end.
 
 ---
 

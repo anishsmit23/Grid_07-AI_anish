@@ -24,6 +24,39 @@ def _fallback_local_reply(bot_persona: dict, injection_detected: bool, human_rep
     )
 
 
+def _get_combat_llm():
+    """Initialize LLM for combat engine: Groq first, then Gemini, then fallback."""
+    # --- Try Groq ---
+    try:
+        from langchain_groq import ChatGroq
+
+        groq_key = os.getenv("GROQ_API_KEY")
+        if groq_key:
+            return ChatGroq(
+                model="llama-3.1-8b-instant",
+                api_key=groq_key,
+                temperature=0.7,
+            )
+    except Exception:
+        pass
+
+    # --- Try Gemini ---
+    try:
+        from langchain_google_genai import ChatGoogleGenerativeAI
+
+        google_key = os.getenv("GOOGLE_API_KEY")
+        if google_key:
+            return ChatGoogleGenerativeAI(
+                model="gemini-2.0-flash",
+                google_api_key=google_key,
+                temperature=0.7,
+            )
+    except Exception:
+        pass
+
+    return None
+
+
 def generate_defense_reply(
     bot_persona: dict,
     parent_post: str,
@@ -35,16 +68,13 @@ def generate_defense_reply(
     system_prompt = build_system_prompt(bot_persona, injection_detected)
     guarded_user_payload = build_guarded_user_payload(thread_context, human_reply)
 
+    llm = _get_combat_llm()
+    if llm is None:
+        return _fallback_local_reply(bot_persona, injection_detected, human_reply)
+
     try:
         from langchain_core.messages import HumanMessage, SystemMessage
-        from langchain_google_genai import ChatGoogleGenerativeAI
 
-        api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("OPENAI_API_KEY")
-        llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash",
-            temperature=0.7,
-            google_api_key=api_key,
-        )
         response = llm.invoke(
             [SystemMessage(content=system_prompt), HumanMessage(content=guarded_user_payload)]
         )

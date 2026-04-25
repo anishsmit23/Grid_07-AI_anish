@@ -22,15 +22,15 @@ def _build_persona_store() -> VectorStore:
     return store
 
 
-def route_post_to_bots(post_content: str, threshold: float = 0.85, top_k: int = 3) -> list[str]:
+def route_post_to_bots(post_content: str, threshold: float = 0.25, top_k: int = 3) -> list[str]:
     """
     Route a post to persona IDs whose cosine similarity exceeds the threshold.
 
-    The default threshold of 0.85 matches the assignment requirement.
-    sentence-transformers (all-MiniLM-L6-v2) produces normalized vectors
-    that reliably reach this range for semantically related content.
-    Install sentence-transformers to get accurate similarity scores:
-        pip install sentence-transformers
+    The assignment specifies 0.85 but notes: "you may need to tweak this
+    threshold depending on your embedding model to get realistic results."
+    With sentence-transformers (all-MiniLM-L6-v2), cross-domain similarity
+    between a short post and a persona description typically lands in the
+    0.15–0.40 range, so 0.25 is calibrated for meaningful routing.
     """
     store = _build_persona_store()
     query_embedding = embed_text(post_content)

@@ -64,20 +64,37 @@ class _LocalLLM:
 
 
 def _get_llm():
-    """Initialize Gemini LLM, or local fallback if unavailable."""
+    """Initialize LLM: tries Groq first, then Gemini, then local fallback."""
+    # --- Try Groq (fast, free tier) ---
+    try:
+        from langchain_groq import ChatGroq
+
+        groq_key = os.getenv("GROQ_API_KEY")
+        if groq_key:
+            return ChatGroq(
+                model="llama-3.1-8b-instant",
+                api_key=groq_key,
+                temperature=0.85,
+            )
+    except Exception:
+        pass
+
+    # --- Try Gemini ---
     try:
         from langchain_google_genai import ChatGoogleGenerativeAI
 
-        api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            return _LocalLLM()
-        return ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash",
-            google_api_key=api_key,
-            temperature=0.85,   # higher temperature = more opinionated, varied output
-        )
+        google_key = os.getenv("GOOGLE_API_KEY")
+        if google_key:
+            return ChatGoogleGenerativeAI(
+                model="gemini-2.0-flash",
+                google_api_key=google_key,
+                temperature=0.85,
+            )
     except Exception:
-        return _LocalLLM()
+        pass
+
+    # --- Offline fallback ---
+    return _LocalLLM()
 
 
 def decide_search(state: dict) -> dict:

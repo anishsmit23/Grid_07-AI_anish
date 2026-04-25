@@ -1,0 +1,8 @@
+langchain
+langgraph
+langchain-google-genai
+chromadb
+sentence-transformers
+pydantic
+python-dotenv
+pytest

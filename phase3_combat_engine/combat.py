@@ -2,7 +2,11 @@
 
 from __future__ import annotations
 
-from phase3_combat_engine.prompt_guard import build_system_prompt, detect_injection
+from phase3_combat_engine.prompt_guard import (
+    build_guarded_user_payload,
+    build_system_prompt,
+    detect_injection,
+)
 from phase3_combat_engine.thread_builder import build_thread_context
 
 
@@ -27,6 +31,7 @@ def generate_defense_reply(
     thread_context = build_thread_context(parent_post, comment_history, human_reply)
     injection_detected = detect_injection(human_reply)
     system_prompt = build_system_prompt(bot_persona, injection_detected)
+    guarded_user_payload = build_guarded_user_payload(thread_context, human_reply)
 
     try:
         from langchain_core.messages import HumanMessage, SystemMessage
@@ -34,7 +39,7 @@ def generate_defense_reply(
 
         llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.7)
         response = llm.invoke(
-            [SystemMessage(content=system_prompt), HumanMessage(content=thread_context)]
+            [SystemMessage(content=system_prompt), HumanMessage(content=guarded_user_payload)]
         )
         return response.content
     except Exception:

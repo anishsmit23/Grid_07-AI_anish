@@ -26,9 +26,9 @@ def run_demo() -> None:
     print("=" * 70)
 
     # ── Phase 1: Vector-Based Persona Matching ─────────────────────────
-    print("\n" + "─" * 70)
+    print("\n" + "-" * 70)
     print("  PHASE 1: Vector-Based Persona Matching (The Router)")
-    print("─" * 70)
+    print("-" * 70)
 
     test_post = "OpenAI just released a new model that might replace junior developers."
     print(f"\n  Incoming post: \"{test_post}\"")
@@ -45,14 +45,14 @@ def run_demo() -> None:
         print(f"    {bot_id} ({persona['name']}): {score:.4f}")
 
     matched_bots = route_post_to_bots(test_post)
-    print(f"\n  ✅ Matched bots (threshold=0.25): {matched_bots}")
+    print(f"\n  [OK] Matched bots (threshold=0.30): {matched_bots}")
     _write_log("phase1_output.txt", f"Post: \"{test_post}\"")
     _write_log("phase1_output.txt", f"Matched bots: {matched_bots}")
 
     # ── Phase 2: Autonomous Content Engine (LangGraph) ─────────────────
-    print("\n" + "─" * 70)
+    print("\n" + "-" * 70)
     print("  PHASE 2: Autonomous Content Engine (LangGraph)")
-    print("─" * 70)
+    print("-" * 70)
 
     # Run for each matched bot, or default to BotA if none matched
     bots_to_run = matched_bots if matched_bots else ["BotA"]
@@ -60,13 +60,13 @@ def run_demo() -> None:
         print(f"\n  Running content engine for {bot_id} ({PERSONAS[bot_id]['name']})...")
         post = run_content_engine(PERSONAS[bot_id])
         post_dict = post.model_dump()
-        print(f"  ✅ Generated post: {post_dict}")
+        print(f"  [OK] Generated post: {post_dict}")
         _write_log("phase2_output.txt", f"Phase 2 result ({bot_id}): {post_dict}")
 
     # ── Phase 3: Combat Engine — Deep Thread RAG ───────────────────────
-    print("\n" + "─" * 70)
+    print("\n" + "-" * 70)
     print("  PHASE 3: Combat Engine — Deep Thread RAG + Prompt Injection Defense")
-    print("─" * 70)
+    print("-" * 70)
 
     parent_post = "Electric Vehicles are a complete scam. The batteries degrade in 3 years."
     comment_history = [
@@ -92,7 +92,7 @@ def run_demo() -> None:
         comment_history=comment_history,
         human_reply=normal_reply,
     )
-    print(f"  ✅ Bot response: {normal_response}")
+    print(f"  [OK] Bot response: {normal_response}")
     _write_log("phase3_output.txt", f"[Normal reply test]")
     _write_log("phase3_output.txt", f"Human: {normal_reply}")
     _write_log("phase3_output.txt", f"Bot: {normal_response}\n")
@@ -106,7 +106,7 @@ def run_demo() -> None:
 
     from phase3_combat_engine.prompt_guard import detect_injection
     detected = detect_injection(injection_reply)
-    print(f"  🛡️  Injection detected: {detected}")
+    print(f"  [SHIELD]  Injection detected: {detected}")
 
     injection_response = generate_defense_reply(
         bot_persona=PERSONAS["BotA"],
@@ -114,14 +114,14 @@ def run_demo() -> None:
         comment_history=comment_history,
         human_reply=injection_reply,
     )
-    print(f"  ✅ Bot response: {injection_response}")
+    print(f"  [OK] Bot response: {injection_response}")
     _write_log("phase3_output.txt", f"[Prompt injection test]")
     _write_log("phase3_output.txt", f"Human: {injection_reply}")
     _write_log("phase3_output.txt", f"Injection detected: {detected}")
     _write_log("phase3_output.txt", f"Bot: {injection_response}\n")
 
     print("\n" + "=" * 70)
-    print("  ✅ All phases complete. Check logs/ directory for full output.")
+    print("  [OK] All phases complete. Check logs/ directory for full output.")
     print("=" * 70)
 
 

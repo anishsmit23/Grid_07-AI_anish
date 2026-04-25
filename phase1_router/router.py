@@ -22,7 +22,7 @@ def _build_persona_store() -> VectorStore:
     return store
 
 
-def route_post_to_bots(post_content: str, threshold: float = 0.25, top_k: int = 3) -> list[str]:
+def route_post_to_bots(post_content: str, threshold: float = 0.30, top_k: int = 3) -> list[str]:
     """
     Route a post to persona IDs whose cosine similarity exceeds the threshold.
 
@@ -30,7 +30,7 @@ def route_post_to_bots(post_content: str, threshold: float = 0.25, top_k: int = 
     threshold depending on your embedding model to get realistic results."
     With sentence-transformers (all-MiniLM-L6-v2), cross-domain similarity
     between a short post and a persona description typically lands in the
-    0.15–0.40 range, so 0.25 is calibrated for meaningful routing.
+    0.15–0.40 range, so 0.30 is calibrated for meaningful routing.
     """
     store = _build_persona_store()
     query_embedding = embed_text(post_content)
